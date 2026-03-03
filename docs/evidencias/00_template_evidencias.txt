@@ -1,0 +1,95 @@
+========================================
+TEMPLATE DE EVIDENCIAS - LAB VAGRANT + ANSIBLE
+========================================
+
+DATOS DEL ALUMNO
+----------------
+Nombre:
+Fecha:
+Curso/Grupo:
+
+
+FASE 0 - HOST (preparacion)
+---------------------------
+Comandos (ejecutar en HOST):
+1) vagrant --version
+2) VBoxManage --version
+3) vagrant status
+
+Salida / evidencia:
+
+[Pega aqui la salida de vagrant --version]
+
+[Pega aqui la salida de VBoxManage --version]
+
+[Pega aqui la salida de vagrant status]
+
+
+FASE 2 - CONTROL (red y conectividad)
+-------------------------------------
+Comandos (ejecutar en CONTROL):
+1) ip a
+2) ping -c 2 192.168.56.11
+3) ping -c 2 192.168.56.12
+4) ping -c 2 1.1.1.1
+
+Salida / evidencia:
+
+[Pega aqui la salida de ip a]
+
+[Pega aqui la salida de ping -c 2 192.168.56.11]
+
+[Pega aqui la salida de ping -c 2 192.168.56.12]
+
+[Pega aqui la salida de ping -c 2 1.1.1.1]
+
+
+FASE 3 - CONTROL (Ansible)
+--------------------------
+Comandos (ejecutar en CONTROL):
+1) cd /vagrant/ansible
+2) ansible --version
+3) ansible -m ping lab
+4) ansible-playbook site.yml    (1ra ejecucion)
+5) ansible-playbook site.yml    (2da ejecucion)
+
+Salida / evidencia:
+
+[Pega aqui la salida de ansible --version]
+
+[Pega aqui la salida de ansible -m ping lab]
+
+[Pega aqui la salida de ansible-playbook site.yml (1ra ejecucion)]
+
+[Pega aqui la salida de ansible-playbook site.yml (2da ejecucion)]
+
+
+FASE 4 - CONTROL (validacion web)
+---------------------------------
+Comando (ejecutar en CONTROL):
+1) curl -I http://192.168.56.11
+
+Salida / evidencia:
+
+[Pega aqui la salida de curl -I http://192.168.56.11]
+
+
+FASE 5 (OPCIONAL) - DB (hardening/servicio)
+--------------------------------------------
+Comando (ejecutar en DB):
+1) systemctl is-active mariadb
+
+Salida / evidencia:
+
+[Pega aqui la salida de systemctl is-active mariadb]
+
+
+CHECKLIST FINAL
+---------------
+[ ] Fase 0 completa (versiones y estado OK)
+[ ] Fase 2 completa (red y ping OK)
+[ ] Fase 3 completa (ansible ping y playbook OK)
+[ ] Fase 4 completa (curl con respuesta OK)
+[ ] Fase 5 opcional completa (mariadb active)
+[ ] Evidencias guardadas en la carpeta correcta por fase
+[ ] Capturas muestran comando + resultado

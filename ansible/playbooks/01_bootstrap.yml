@@ -1,0 +1,25 @@
+---
+- name: Bootstrap (paquetes basicos y cache de paquetes)
+  hosts: lab
+  become: true
+  tasks:
+    - name: Actualizar cache APT (Debian)
+      ansible.builtin.apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Actualizar cache DNF (RedHat)
+      ansible.builtin.dnf:
+        update_cache: yes
+      when: ansible_os_family == "RedHat"
+
+    - name: Instalar paquetes comunes
+      ansible.builtin.package:
+        name: "{{ common_packages }}"
+        state: present
+
+    - name: Asegurar Python en targets RedHat (por si la box es minimal)
+      ansible.builtin.dnf:
+        name: python3
+        state: present
+      when: ansible_os_family == "RedHat"

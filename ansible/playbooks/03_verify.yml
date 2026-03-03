@@ -1,0 +1,29 @@
+---
+- name: Verificar web (HTTP)
+  hosts: web
+  become: false
+  tasks:
+    - name: Comprobar que el puerto 80 responde
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}/"
+        return_content: true
+      register: web_check
+
+    - name: Confirmar que la pagina es la desplegada por Ansible
+      ansible.builtin.debug:
+        msg: "OK encontrado: {{ web_check.content is search('OK - web configurada por Ansible') }}"
+
+- name: Verificar DB (servicio activo)
+  hosts: db
+  become: true
+  vars_files:
+    - ../group_vars/rocky.yml
+  tasks:
+    - name: Obtener estado del servicio de DB
+      ansible.builtin.systemd:
+        name: "{{ db_service }}"
+      register: db_state
+
+    - name: Mostrar ActiveState
+      ansible.builtin.debug:
+        var: db_state.status.ActiveState

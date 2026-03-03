@@ -1,0 +1,8 @@
+.vagrant/
+_bak/
+*.bak
+*.bak-*
+docs/evidencias/*
+!docs/evidencias/README.md
+!docs/evidencias/00_template_evidencias.txt
+!docs/evidencias/**/
