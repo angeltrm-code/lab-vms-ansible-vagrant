@@ -11,14 +11,14 @@
 ✅ Tendrás 3 VMs creadas y arrancadas:
 
 - `control` (Debian) → 192.168.56.10  
-- `web` (Debian) → 192.168.56.11  
-- `db` (Rocky Linux) → 192.168.56.12  
+- `web-nginx` (Debian) → 192.168.56.11  
+- `db-mariadb` (Rocky Linux) → 192.168.56.12  
 
 ✅ Podrás entrar por SSH con:
 
 - `vagrant ssh control`
-- `vagrant ssh web`
-- `vagrant ssh db`
+- `vagrant ssh web-nginx`
+- `vagrant ssh db-mariadb`
 
 ✅ Podrás comprobar IPs dentro de cada VM y hacer ping entre ellas.
 
@@ -135,31 +135,31 @@ Vagrant.configure("2") do |config|
   end
 
   # =========================
-  # VM: web (Debian)
+  # VM: web-nginx (Debian)
   # =========================
-  config.vm.define "web" do |web|
-    web.vm.box = "debian/bookworm64"
-    web.vm.hostname = "web"
-    web.vm.network "private_network", ip: "#{LAB_NET}11"
+  config.vm.define "web-nginx" do |web_nginx|
+    web_nginx.vm.box = "debian/bookworm64"
+    web_nginx.vm.hostname = "web-nginx"
+    web_nginx.vm.network "private_network", ip: "#{LAB_NET}11"
 
-    web.vm.provider "virtualbox" do |vb|
-      vb.name = "lab-web"
+    web_nginx.vm.provider "virtualbox" do |vb|
+      vb.name = "lab-web-nginx"
       vb.cpus = 1
       vb.memory = 1024
     end
   end
 
   # =========================
-  # VM: db (Rocky)
+  # VM: db-mariadb (Rocky)
   # =========================
-  config.vm.define "db" do |db|
-    db.vm.box = "rockylinux/9"
-    db.vm.box_version = "5.0.0"
-    db.vm.hostname = "db"
-    db.vm.network "private_network", ip: "#{LAB_NET}12"
+  config.vm.define "db-mariadb" do |db_mariadb|
+    db_mariadb.vm.box = "rockylinux/9"
+    db_mariadb.vm.box_version = "5.0.0"
+    db_mariadb.vm.hostname = "db-mariadb"
+    db_mariadb.vm.network "private_network", ip: "#{LAB_NET}12"
 
-    db.vm.provider "virtualbox" do |vb|
-      vb.name = "lab-db"
+    db_mariadb.vm.provider "virtualbox" do |vb|
+      vb.name = "lab-db-mariadb"
       vb.cpus = 2
       vb.memory = 2048
     end
@@ -173,7 +173,7 @@ end
   - **NAT** (automático) → salida a Internet
   - **Host-Only** (`private_network`) → IP fija 192.168.56.X
 - Ajusta CPU/RAM para que funcione fluido.
-- Pone hostnames coherentes: `control`, `web`, `db`.
+- Pone hostnames coherentes: `control`, `web-nginx`, `db-mariadb`.
 
 ---
 
@@ -206,12 +206,12 @@ vagrant ssh control
 
 En otra terminal:
 ```bash
-vagrant ssh web
+vagrant ssh web-nginx
 ```
 
 Y:
 ```bash
-vagrant ssh db
+vagrant ssh db-mariadb
 ```
 
 ---
@@ -228,7 +228,7 @@ Busca algo como:
 - `192.168.56.10` (Host-Only)
 - otra IP (NAT), normalmente `10.0.2.15` o similar
 
-Haz lo mismo en **web** y **db**.
+Haz lo mismo en **web-nginx** y **db-mariadb**.
 
 ---
 
@@ -241,14 +241,14 @@ ping -c 2 192.168.56.11
 ping -c 2 192.168.56.12
 ```
 
-En `web`:
+En `web-nginx`:
 
 ```bash
 ping -c 2 192.168.56.10
 ping -c 2 192.168.56.12
 ```
 
-En `db`:
+En `db-mariadb`:
 
 ```bash
 ping -c 2 192.168.56.10
@@ -261,7 +261,7 @@ ping -c 2 192.168.56.11
 
 ## 10) Verificar salida a Internet (NAT)
 
-En Debian (control/web):
+En Debian (control/web-nginx):
 
 ```bash
 ping -c 2 1.1.1.1
@@ -273,7 +273,7 @@ Y también:
 ping -c 2 deb.debian.org
 ```
 
-En Rocky (db):
+En Rocky (db-mariadb):
 
 ```bash
 ping -c 2 1.1.1.1
@@ -343,7 +343,7 @@ No lo cambiamos aún: primero confirmamos el error exacto.
 ## 12) Checkpoint de la Fase 2 (lo mínimo para seguir)
 
 ✅ Debes poder demostrar:
-- [ ] `vagrant status` muestra `control`, `web`, `db` en `running`
+- [ ] `vagrant status` muestra `control`, `web-nginx`, `db-mariadb` en `running`
 - [ ] `vagrant ssh control` funciona
 - [ ] `ip a` muestra `192.168.56.10/11/12` en cada VM
 - [ ] `ping` entre VMs por Host-Only funciona
@@ -369,6 +369,6 @@ Guarda capturas o copia/pega de estos comandos:
 ## Próximo paso (Fase 3)
 Con las VMs arriba, en la Fase 3 haremos:
 - instalar Ansible en `control`
-- inventario con `web` y `db`
+- inventario con `web-nginx` y `db-mariadb`
 - `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab`
 - playbooks por etapas: bootstrap → config → verify

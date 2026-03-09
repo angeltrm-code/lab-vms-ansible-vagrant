@@ -11,8 +11,8 @@
 Un laboratorio típico para aprender Vagrant + Ansible tiene 3 piezas mínimas:
 
 - **control** → donde ejecutas Ansible (el “cerebro”)
-- **web** → un servidor con un servicio visible (para validar)
-- **db** → un servidor de base de datos (para practicar separación de roles)
+- **web-nginx** → un servidor con un servicio visible (para validar)
+- **db-mariadb** → un servidor de base de datos (para practicar separación de roles)
 
 Opcionales (cuando ya te sientas cómodo):
 
@@ -32,11 +32,11 @@ Opcionales (cuando ya te sientas cómodo):
 Tareas típicas:
 - Tener instalado Ansible
 - Guardar el inventario (`inventory.ini`) y playbooks (`site.yml`)
-- Acceder por SSH a `web` y `db`
+- Acceder por SSH a `web-nginx` y `db-mariadb`
 
 ---
 
-### 2.2 web (servidor web)
+### 2.2 web-nginx (servidor web)
 **Qué es:** un servidor con un servicio fácil de comprobar (HTTP).  
 **Para qué sirve:** validar que Ansible instala y configura correctamente.
 
@@ -47,14 +47,14 @@ Tareas típicas:
 
 ---
 
-### 2.3 db (servidor de base de datos)
+### 2.3 db-mariadb (servidor de base de datos)
 **Qué es:** servidor dedicado a base de datos.  
-**Para qué sirve:** practicar “separación de responsabilidades” (web ≠ db).
+**Para qué sirve:** practicar “separación de responsabilidades” (web-nginx ≠ db-mariadb).
 
 Tareas típicas:
 - Instalar MariaDB / PostgreSQL
 - Crear usuario y base de datos de práctica
-- Permitir acceso desde `web` (si lo configuramos)
+- Permitir acceso desde `web-nginx` (si lo configuramos)
 
 ---
 
@@ -67,8 +67,8 @@ Para aprender bien, conviene tocar **dos familias**:
 
 ### Propuesta recomendada (mixta y didáctica)
 - **control**: Debian (más ligero y cómodo para Ansible)
-- **web**: Debian
-- **db**: Rocky Linux (para practicar dnf, firewalld, etc.)
+- **web-nginx**: Debian
+- **db-mariadb**: Rocky Linux (para practicar dnf, firewalld, etc.)
 
 > Alternativa: todo Debian (más simple) o todo Rocky (también válido).  
 > Aquí usaremos **mixto** porque el proyecto pide tener en cuenta Debian y RedHat.
@@ -94,7 +94,7 @@ Características:
 Sirve para:
 - Que el host hable con las VMs por IP fija
 - Que Ansible controle siempre por IP estable
-- Que `web` y `db` se vean entre sí sin depender de Internet
+- Que `web-nginx` y `db-mariadb` se vean entre sí sin depender de Internet
 
 Características:
 - Red **privada**, no sale a Internet (por sí sola)
@@ -114,8 +114,8 @@ Usaremos una red Host-Only típica:
 | VM | Rol | SO | Host-Only IP | NAT |
 |---|---|---|---|---|
 | control | Ansible controller | Debian | 192.168.56.10 | Sí |
-| web | Servidor web | Debian | 192.168.56.11 | Sí |
-| db | Base de datos | Rocky Linux | 192.168.56.12 | Sí |
+| web-nginx | Servidor web | Debian | 192.168.56.11 | Sí |
+| db-mariadb | Base de datos | Rocky Linux | 192.168.56.12 | Sí |
 | monitor (opcional) | Monitorización | Debian/Rocky | 192.168.56.13 | Sí |
 | client (opcional) | Cliente pruebas | Debian | 192.168.56.14 | Sí |
 
@@ -135,11 +135,11 @@ La idea es que el lab funcione en un PC normal sin ir lento.
 | VM | CPU | RAM | Disco |
 |---|---:|---:|---:|
 | control | 1 vCPU | 1024–1536 MB | 10–20 GB |
-| web | 1 vCPU | 1024 MB | 10–20 GB |
-| db | 1–2 vCPU | 1536–2048 MB | 10–20 GB |
+| web-nginx | 1 vCPU | 1024 MB | 10–20 GB |
+| db-mariadb | 1–2 vCPU | 1536–2048 MB | 10–20 GB |
 
 > Si tu PC tiene 16 GB RAM, esto suele ir bien.  
-> Si tienes 8 GB RAM, baja `db` a 1536 MB y evita añadir `monitor` por ahora.
+> Si tienes 8 GB RAM, baja `db-mariadb` a 1536 MB y evita añadir `monitor` por ahora.
 
 ---
 
@@ -147,11 +147,11 @@ La idea es que el lab funcione en un PC normal sin ir lento.
 
 ### 7.1 Nombres de VMs
 Usaremos nombres cortos y claros:
-- `control`, `web`, `db` (y opcionales `monitor`, `client`)
+- `control`, `web-nginx`, `db-mariadb` (y opcionales `monitor`, `client`)
 
 ### 7.2 Nombres dentro de Linux (hostname)
 Coinciden con el nombre:
-- `control`, `web`, `db`
+- `control`, `web-nginx`, `db-mariadb`
 
 ### 7.3 Estructura de carpetas del lab
 (la crearemos en la Fase 2, pero la dejamos diseñada ya)
@@ -177,7 +177,7 @@ lab-vms-ansible-vagrant/
 
 ✅ Checklist de diseño (debe quedar “cerrado”):
 - [ ] Lista final de VMs (mínimo 3)
-- [ ] Rol de cada VM definido (control/web/db)
+- [ ] Rol de cada VM definido (control/web-nginx/db-mariadb)
 - [ ] Red elegida: NAT + Host-Only
 - [ ] IPs fijas definidas
 - [ ] Recursos CPU/RAM definidos
@@ -191,7 +191,7 @@ lab-vms-ansible-vagrant/
 
 Este laboratorio queda definido así:
 
-- **3 VMs**: `control` (Debian), `web` (Debian), `db` (Rocky)
+- **3 VMs**: `control` (Debian), `web-nginx` (Debian), `db-mariadb` (Rocky)
 - **2 redes** por VM: NAT (Internet) + Host-Only (IP fija)
 - **IPs**: 192.168.56.10 / .11 / .12
 - **Objetivo**: levantar con Vagrant y configurar con Ansible de forma reproducible

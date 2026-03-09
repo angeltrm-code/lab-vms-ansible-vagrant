@@ -74,9 +74,9 @@ Salida / evidencia:
 [Pega aqui la salida de curl -I http://192.168.56.11]
 
 
-FASE 5 (OPCIONAL) - DB (hardening/servicio)
+FASE 5 (OPCIONAL) - DB-MARIADB (hardening/servicio)
 --------------------------------------------
-Comando (ejecutar en DB):
+Comando (ejecutar en db-mariadb):
 1) systemctl is-active mariadb
 
 Salida / evidencia:

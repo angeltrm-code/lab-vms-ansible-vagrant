@@ -32,7 +32,7 @@
 ## 2) Requisitos mínimos recomendados
 
 ### Hardware (orientativo)
-Para 3 VMs (control/web/db), recomendado:
+Para 3 VMs (control/web-nginx/db-mariadb), recomendado:
 - CPU: 4 núcleos o más
 - RAM: 16 GB ideal (8 GB puede ir justo)
 - Disco libre: 30–60 GB

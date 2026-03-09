@@ -1,6 +1,6 @@
 ---
 - name: Verificar web (HTTP)
-  hosts: web
+  hosts: webservers
   become: false
   tasks:
     - name: Comprobar que el puerto 80 responde
@@ -19,7 +19,7 @@
         success_msg: "Verificacion web OK: HTTP 200 y contenido esperado."
 
 - name: Verificar DB (servicio activo)
-  hosts: db
+  hosts: dbservers
   become: true
   tasks:
     - name: Obtener estado del servicio de DB

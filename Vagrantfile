@@ -25,31 +25,31 @@ Vagrant.configure("2") do |config|
   end
 
   # =========================
-  # VM: web (Debian)
+  # VM: web-nginx (Debian)
   # =========================
-  config.vm.define "web" do |web|
-    web.vm.box = "debian/bookworm64"
-    web.vm.hostname = "web"
-    web.vm.network "private_network", ip: "#{LAB_NET}11"
+  config.vm.define "web-nginx" do |web_nginx|
+    web_nginx.vm.box = "debian/bookworm64"
+    web_nginx.vm.hostname = "web-nginx"
+    web_nginx.vm.network "private_network", ip: "#{LAB_NET}11"
 
-    web.vm.provider "virtualbox" do |vb|
-      vb.name = "lab-web"
+    web_nginx.vm.provider "virtualbox" do |vb|
+      vb.name = "lab-web-nginx"
       vb.cpus = 1
       vb.memory = 1024
     end
   end
 
   # =========================
-  # VM: db (Rocky)
+  # VM: db-mariadb (Rocky)
   # =========================
-  config.vm.define "db" do |db|
-    db.vm.box = "rockylinux/9"
-    db.vm.box_version = "5.0.0"
-    db.vm.hostname = "db"
-    db.vm.network "private_network", ip: "#{LAB_NET}12"
+  config.vm.define "db-mariadb" do |db_mariadb|
+    db_mariadb.vm.box = "rockylinux/9"
+    db_mariadb.vm.box_version = "5.0.0"
+    db_mariadb.vm.hostname = "db-mariadb"
+    db_mariadb.vm.network "private_network", ip: "#{LAB_NET}12"
 
-    db.vm.provider "virtualbox" do |vb|
-      vb.name = "lab-db"
+    db_mariadb.vm.provider "virtualbox" do |vb|
+      vb.name = "lab-db-mariadb"
       vb.cpus = 2
       vb.memory = 2048
     end

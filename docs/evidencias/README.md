@@ -47,7 +47,7 @@ Guarda cada evidencia en la carpeta correcta:
   Comando: `vagrant status`
 - `20_ansible_ping_lab.txt`
   Comando: `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab`
-- `30_curl_web_headers.txt`
+- `30_curl_web_nginx_headers.txt`
   Comando: `curl -I http://192.168.56.11`
 - `40_db_mariadb_active.txt`
   Comando: `systemctl is-active mariadb`
@@ -55,7 +55,7 @@ Guarda cada evidencia en la carpeta correcta:
 ## Consejos para capturas buenas
 
 - Muestra SIEMPRE el comando y su salida completa.
-- Incluye el prompt para saber en que maquina estas (`host`, `control`, `db`).
+- Incluye el prompt para saber en que maquina estas (`host`, `control`, `web-nginx`, `db-mariadb`).
 - Evita recortar la parte importante del resultado.
 - Si hay error, guardalo tambien: tambien cuenta como evidencia de diagnostico.
 

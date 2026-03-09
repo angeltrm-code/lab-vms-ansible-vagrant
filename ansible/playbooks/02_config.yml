@@ -1,6 +1,6 @@
 ---
 - name: Configurar servidor web (Debian)
-  hosts: web
+  hosts: webservers
   become: true
   tasks:
     - name: Instalar paquete web
@@ -26,7 +26,7 @@
         mode: "0644"
 
 - name: Configurar base de datos (Rocky)
-  hosts: db
+  hosts: dbservers
   become: true
   tasks:
     - name: Instalar MariaDB Server

@@ -29,12 +29,12 @@ Marca todo como ✅ antes de entregar.
 - [ ] Carpeta del proyecto creada (ordenada)
 
 ### 2.2 Vagrant / VirtualBox (infra)
-- [ ] `vagrant status` muestra `control`, `web`, `db` en `running`
+- [ ] `vagrant status` muestra `control`, `web-nginx`, `db-mariadb` en `running`
 - [ ] `vagrant ssh control` funciona
 - [ ] IPs Host-Only son correctas:
   - [ ] `control` → `192.168.56.10`
-  - [ ] `web` → `192.168.56.11`
-  - [ ] `db` → `192.168.56.12`
+  - [ ] `web-nginx` → `192.168.56.11`
+  - [ ] `db-mariadb` → `192.168.56.12`
 - [ ] Ping interno funciona (desde `control`):
   - [ ] `ping -c 2 192.168.56.11` OK
   - [ ] `ping -c 2 192.168.56.12` OK
@@ -43,7 +43,7 @@ Marca todo como ✅ antes de entregar.
 
 ### 2.3 Ansible (automatización)
 - [ ] En `control`, `ansible --version` funciona
-- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → SUCCESS en web y db
+- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → SUCCESS en web-nginx y db-mariadb
 - [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` termina sin fallos
 - [ ] Segunda ejecución de `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` muestra pocos `changed` (idempotencia)
 
@@ -52,7 +52,7 @@ Marca todo como ✅ antes de entregar.
   - [ ] `curl -I http://192.168.56.11` devuelve `HTTP/1.1 200 OK` (o similar)
   - [ ] `curl -s http://192.168.56.11 | grep -i "OK - web configurada por Ansible"` encuentra el texto
 - [ ] DB:
-  - [ ] En `db`, `systemctl is-active mariadb` devuelve `active`
+  - [ ] En `db-mariadb`, `systemctl is-active mariadb` devuelve `active`
 
 ---
 
@@ -90,9 +90,9 @@ Guardar en `docs/evidencias/fase2_vagrant/`:
 
 - `01_vagrant_status.txt` → `vagrant status`
 - `02_control_ip_a.txt` → `ip a` en control
-- `03_web_ip_a.txt` → `ip a` en web
-- `04_db_ip_a.txt` → `ip a` en db
-- `05_ping_control_to_web_db.txt` → pings desde control a web y db
+- `03_web_nginx_ip_a.txt` → `ip a` en web-nginx
+- `04_db_mariadb_ip_a.txt` → `ip a` en db-mariadb
+- `05_ping_control_to_web_nginx_db_mariadb.txt` → pings desde control a web-nginx y db-mariadb
 - `06_ping_internet_control.txt` → `ping -c 2 1.1.1.1`
 
 ---
@@ -110,8 +110,8 @@ Guardar en `docs/evidencias/fase3_ansible/`:
 ### 4.4 Evidencias de validación de servicios (Fase 4)
 Guardar en `docs/evidencias/fase4_validacion/`:
 
-- `01_curl_web_headers.txt` → `curl -I http://192.168.56.11`
-- `02_curl_web_content.txt` → `curl -s http://192.168.56.11 | head`
+- `01_curl_web_nginx_headers.txt` → `curl -I http://192.168.56.11`
+- `02_curl_web_nginx_content.txt` → `curl -s http://192.168.56.11 | head`
 - `03_db_mariadb_active.txt` → `systemctl is-active mariadb`
 - (opcional) `04_db_port_3306.txt` → `ss -lnt | grep 3306`
 
@@ -120,9 +120,9 @@ Guardar en `docs/evidencias/fase4_validacion/`:
 ### 4.5 Evidencias de hardening (Fase 5) — si lo aplicaste
 Guardar en `docs/evidencias/fase5_hardening/`:
 
-- `01_ufw_status_web.txt` → `ufw status verbose` (en web)
-- `02_firewalld_db.txt` → `firewall-cmd --list-all` (en db)
-- `03_listening_ports.txt` → `ss -lntp` (en cada VM o al menos en web/db)
+- `01_ufw_status_web_nginx.txt` → `ufw status verbose` (en web-nginx)
+- `02_firewalld_db_mariadb.txt` → `firewall-cmd --list-all` (en db-mariadb)
+- `03_listening_ports.txt` → `ss -lntp` (en cada VM o al menos en web-nginx/db-mariadb)
 
 ---
 
@@ -145,10 +145,10 @@ curl -I http://192.168.56.11 | head -n 5
 ping -c 2 1.1.1.1
 ```
 
-En `db`:
+En `db-mariadb`:
 
 ```bash
-vagrant ssh db -c "systemctl is-active mariadb"
+vagrant ssh db-mariadb -c "systemctl is-active mariadb"
 ```
 
 ✅ Si todo esto va bien, el lab está listo para entregar.

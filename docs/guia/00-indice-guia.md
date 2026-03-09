@@ -40,6 +40,14 @@
 
 ---
 
+### 1.3 Ruta corta (inicio rápido para clase)
+- [guia-rapida.md](guia-rapida.md)  
+  *(Levantado, Ansible y validación en pocos pasos.)*
+- [04-entrega-final-checklist.md](04-entrega-final-checklist.md)  
+  *(Checklist final de funcionamiento y evidencias.)*
+
+---
+
 ## 2) Guía por fases (paso a paso)
 
 ### Fase 0 — Preparación del host (tu PC)
@@ -63,7 +71,7 @@
 - [02-fase-1-diseno.md](02-fase-1-diseno.md)
 
 **Qué aprenderás:**
-- Elegir VMs (control/web/db)
+- Elegir VMs (control/web-nginx/db-mariadb)
 - Definir redes (NAT + Host-Only)
 - Definir IPs fijas y recursos (CPU/RAM)
 
@@ -88,7 +96,7 @@
 **Evidencias recomendadas:**
 - `docs/evidencias/fase2_vagrant/01_vagrant_status.txt`
 - `docs/evidencias/fase2_vagrant/*_ip_a.txt`
-- `docs/evidencias/fase2_vagrant/05_ping_control_to_web_db.txt`
+- `docs/evidencias/fase2_vagrant/05_ping_control_to_web_nginx_db_mariadb.txt`
 
 ---
 
@@ -125,7 +133,7 @@
 - `systemctl is-active mariadb` → active
 
 **Evidencias recomendadas:**
-- `docs/evidencias/fase4_validacion/01_curl_web_headers.txt`
+- `docs/evidencias/fase4_validacion/01_curl_web_nginx_headers.txt`
 - `docs/evidencias/fase4_validacion/03_db_mariadb_active.txt`
 
 ---
@@ -140,11 +148,11 @@
 - SSH con buenas prácticas
 
 **Checkpoint:**
-- El hardening NO rompe Ansible ni la web
+- El hardening NO rompe Ansible ni web-nginx
 
 **Evidencias recomendadas:**
-- `docs/evidencias/fase5_hardening/01_ufw_status_web.txt`
-- `docs/evidencias/fase5_hardening/02_firewalld_db.txt`
+- `docs/evidencias/fase5_hardening/01_ufw_status_web_nginx.txt`
+- `docs/evidencias/fase5_hardening/02_firewalld_db_mariadb.txt`
 
 ---
 
@@ -154,6 +162,13 @@
 - [README.md](../../README.md)
 
 > README principal en la raiz del repo.
+
+### Checklist de entrega
+- [04-entrega-final-checklist.md](04-entrega-final-checklist.md)
+
+### Evidencias (plantilla y normas)
+- [../evidencias/README.md](../evidencias/README.md)
+- [../evidencias/00_template_evidencias.txt](../evidencias/00_template_evidencias.txt)
 
 ---
 

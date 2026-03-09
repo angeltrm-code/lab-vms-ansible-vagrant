@@ -2,7 +2,7 @@
 
 > Proyecto: **Lab VMs + VirtualBox + Vagrant + Ansible**  
 > Público objetivo: **personas sin experiencia**  
-> Objetivo de esta fase: usar Ansible desde `control` para **configurar** `web` y `db` de forma **repetible** (idempotente), con un flujo por etapas: **bootstrap → config → verify**.
+> Objetivo de esta fase: usar Ansible desde `control` para **configurar** `web-nginx` y `db-mariadb` de forma **repetible** (idempotente), con un flujo por etapas: **bootstrap → config → verify**.
 
 ---
 
@@ -14,8 +14,8 @@
 - `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` → instala y configura servicios
 
 ✅ Resultado final (ejemplo didáctico):
-- En **web**: servidor web instalado y funcionando (nginx por defecto)
-- En **db**: MariaDB instalado y arrancado
+- En **web-nginx**: servidor web instalado y funcionando (nginx por defecto)
+- En **db-mariadb**: MariaDB instalado y arrancado
 - Validación: Ansible confirma estado y tú lo verificas con comandos y/o desde el host.
 
 ---
@@ -68,7 +68,7 @@ ansible --version
 
 ## 3) Preparar SSH (clave única del laboratorio)
 
-> Vamos a usar **una única clave** del usuario `vagrant` en `control` para entrar a `web` y `db`.
+> Vamos a usar **una única clave** del usuario `vagrant` en `control` para entrar a `web-nginx` y `db-mariadb`.
 
 En `control`:
 
@@ -76,7 +76,7 @@ En `control`:
 ssh-keygen -t ed25519 -N "" -f /home/vagrant/.ssh/id_ed25519
 ```
 
-Copiar la clave pública a `web` y `db`:
+Copiar la clave pública a `web-nginx` y `db-mariadb`:
 
 ```bash
 ssh-copy-id -i /home/vagrant/.ssh/id_ed25519.pub vagrant@192.168.56.11
@@ -90,7 +90,7 @@ ssh -i /home/vagrant/.ssh/id_ed25519 vagrant@192.168.56.11 "hostname"
 ssh -i /home/vagrant/.ssh/id_ed25519 vagrant@192.168.56.12 "hostname"
 ```
 
-Debe responder `web` y `db`.
+Debe responder `web-nginx` y `db-mariadb`.
 
 ---
 
@@ -127,17 +127,17 @@ pipelining = True
 Crea `inventory.ini` en `/vagrant/ansible`:
 
 ```ini
-[web]
-web ansible_host=192.168.56.11
+[webservers]
+web-nginx ansible_host=192.168.56.11
 
-[db]
-db ansible_host=192.168.56.12
+[dbservers]
+db-mariadb ansible_host=192.168.56.12
 
 [debian:children]
-web
+webservers
 
 [rocky:children]
-db
+dbservers
 
 [lab:children]
 debian
@@ -160,7 +160,7 @@ cd /vagrant/ansible
 ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab
 ```
 
-✅ Debes ver `SUCCESS` para `web` y `db`.
+✅ Debes ver `SUCCESS` para `web-nginx` y `db-mariadb`.
 
 ---
 
@@ -239,7 +239,7 @@ Crea `playbooks/02_config.yml`:
 ```yaml
 ---
 - name: Configurar servidor web (Debian)
-  hosts: web
+  hosts: webservers
   become: true
   tasks:
     - name: Instalar paquete web
@@ -265,7 +265,7 @@ Crea `playbooks/02_config.yml`:
         mode: "0644"
 
 - name: Configurar base de datos (Rocky)
-  hosts: db
+  hosts: dbservers
   become: true
   tasks:
     - name: Instalar MariaDB Server
@@ -288,7 +288,7 @@ Crea `playbooks/03_verify.yml`:
 ```yaml
 ---
 - name: Verificar web (HTTP)
-  hosts: web
+  hosts: webservers
   become: false
   tasks:
     - name: Comprobar que el puerto 80 responde
@@ -307,7 +307,7 @@ Crea `playbooks/03_verify.yml`:
         success_msg: "Verificacion web OK: HTTP 200 y contenido esperado."
 
 - name: Verificar DB (servicio activo)
-  hosts: db
+  hosts: dbservers
   become: true
   tasks:
     - name: Obtener estado del servicio de DB
@@ -383,14 +383,14 @@ Guarda salida/capturas de:
 - `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab`
 - `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` (primera y segunda ejecución)
 - `curl http://192.168.56.11`
-- `systemctl is-active mariadb` en `db`
+- `systemctl is-active mariadb` en `db-mariadb`
 
 ---
 
 ## Checkpoint de la Fase 3
 
-- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → SUCCESS en web y db
+- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → SUCCESS en web-nginx y db-mariadb
 - [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` → termina OK
 - [ ] `curl http://192.168.56.11` muestra la página de Ansible
-- [ ] `systemctl is-active mariadb` en db devuelve `active`
+- [ ] `systemctl is-active mariadb` en db-mariadb devuelve `active`
 - [ ] Segunda ejecución del playbook muestra pocos `changed` (idempotente)

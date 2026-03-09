@@ -25,8 +25,8 @@
 
 - Elegimos 3–5 VMs con roles claros (ejemplo típico):
   - **control** (Ansible controller)
-  - **web** (servidor web)
-  - **db** (base de datos)
+  - **web-nginx** (servidor web)
+  - **db-mariadb** (base de datos)
   - *(opcional)* **monitor** (monitorización)
   - *(opcional)* **client** (cliente de pruebas)
 
@@ -56,7 +56,7 @@
   - `vagrant destroy`
   - `vagrant reload`
 
-**Checkpoint:** puedes hacer `vagrant ssh web` y ver la IP correcta dentro.
+**Checkpoint:** puedes hacer `vagrant ssh web-nginx` y ver la IP correcta dentro.
 
 ---
 
@@ -82,7 +82,7 @@
 - Comandos guiados para validar red, SSH, servicios, puertos.
 - Evidencias (capturas y logs) organizadas por paso.
 
-**Checkpoint:** pruebas finales (por ejemplo: web responde, db está arriba, y Ansible reporta todo OK).
+**Checkpoint:** pruebas finales (por ejemplo: web-nginx responde, db-mariadb está arriba, y Ansible reporta todo OK).
 
 ---
 
@@ -144,11 +144,11 @@ Es el “robot de configuración”: en vez de entrar a cada VM a instalar y con
 
 Estas reglas hacen que el lab sea “repetible” y fácil de depurar:
 
-- **Nombres de VMs** claros: `control`, `web`, `db`, `monitor`, `client`
+- **Nombres de VMs** claros: `control`, `web-nginx`, `db-mariadb`, `monitor`, `client`
 - **IPs fijas** en Host-Only (ejemplo):
   - control: `192.168.56.10`
-  - web: `192.168.56.11`
-  - db: `192.168.56.12`
+  - web-nginx: `192.168.56.11`
+  - db-mariadb: `192.168.56.12`
 
 - **Carpeta única** del proyecto (todo dentro):
   - `Vagrantfile`
@@ -185,4 +185,4 @@ Primero lo hacemos **simple, estable y didáctico**. Luego se amplía.
 - [ ] Vagrant instalado: `vagrant --version`
 - [ ] Virtualización activada (BIOS/UEFI)
 - [ ] Carpeta del proyecto creada
-- [ ] Decidido: 3 VMs (control/web/db) para el primer objetivo
+- [ ] Decidido: 3 VMs (control/web-nginx/db-mariadb) para el primer objetivo

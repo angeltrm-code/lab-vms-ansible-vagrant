@@ -40,8 +40,8 @@ Define un único sitio donde vivirán las IPs y nombres:
 | VM | Rol | Host-Only IP |
 |---|---|---|
 | control | Ansible controller | 192.168.56.10 |
-| web | Servidor web | 192.168.56.11 |
-| db | Base de datos | 192.168.56.12 |
+| web-nginx | Servidor web | 192.168.56.11 |
+| db-mariadb | Base de datos | 192.168.56.12 |
 
 ### 2.3 “Síntoma de incoherencia”
 Si en algún documento aparece:
@@ -115,10 +115,10 @@ Y documenta que es un requisito.
 ### Camino B (recomendado para principiantes, cero dependencias)
 No uses módulos de colecciones para firewall y hazlo con comandos.
 
-Ejemplo (Debian web):
+Ejemplo (Debian web-nginx):
 ```yaml
 - name: Configurar UFW (sin colecciones)
-  hosts: web
+  hosts: webservers
   become: true
   tasks:
     - apt:
@@ -147,7 +147,7 @@ Ejemplo (Debian web):
 
 ### 6.1 Regla: una única clave para el lab
 - Genera una clave en `control` (usuario `vagrant`)
-- Copia a `web` y `db`
+- Copia a `web-nginx` y `db-mariadb`
 - Usa esa clave en `inventory.ini`
 
 ### 6.2 Prueba rápida (antes de Ansible)
@@ -185,7 +185,7 @@ Marca esto antes de dar la guía por finalizada:
 - [ ] Fase 3: `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` funciona
 - [ ] Fase 3: `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` funciona 2 veces (idempotencia)
 - [ ] Fase 4: evidencias guardadas y organizadas
-- [ ] Fase 5: hardening no rompe el acceso ni la web
+- [ ] Fase 5: hardening no rompe el acceso ni `web-nginx`
 - [ ] README enlaza a todo y el índice funciona
 
 ---

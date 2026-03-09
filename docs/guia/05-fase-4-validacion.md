@@ -45,9 +45,9 @@ Usa nombres con orden + descripción:
 
 - `01_vagrant_status.txt`
 - `02_control_ip-a.txt`
-- `03_ping_control_to_web.txt`
+- `03_ping_control_to_web_nginx.txt`
 - `10_ansible_ping_lab.txt`
-- `20_curl_web_index.txt`
+- `20_curl_web_nginx_index.txt`
 - `30_db_mariadb_active.txt`
 
 ---
@@ -83,12 +83,12 @@ vagrant status
 
 ### 2.3 Acceso SSH desde el host (prueba básica)
 Guarda en:
-- `docs/evidencias/fase4_validacion/03_vagrant_ssh_web_hostname.txt`
+- `docs/evidencias/fase4_validacion/03_vagrant_ssh_web_nginx_hostname.txt`
 
-Comando (ejemplo con web):
+Comando (ejemplo con web-nginx):
 
 ```bash
-vagrant ssh web -c "hostname && ip a | head -n 25"
+vagrant ssh web-nginx -c "hostname && ip a | head -n 25"
 ```
 
 ---
@@ -125,7 +125,7 @@ ip r
 
 ### 3.2 Pings internos (Host-Only)
 Guarda en:
-- `docs/evidencias/fase4_validacion/11_ping_control_to_web_db.txt`
+- `docs/evidencias/fase4_validacion/11_ping_control_to_web_nginx_db_mariadb.txt`
 
 En `control`:
 
@@ -202,7 +202,7 @@ ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml
 
 ### 5.1 Comprobar desde `control` con curl
 Guarda en:
-- `docs/evidencias/fase4_validacion/30_curl_web_from_control.txt`
+- `docs/evidencias/fase4_validacion/30_curl_web_nginx_from_control.txt`
 
 En `control`:
 
@@ -217,7 +217,7 @@ curl -i http://192.168.56.11 | head -n 20
 
 ### 5.2 Comprobar contenido “OK - web configurada por Ansible”
 Guarda en:
-- `docs/evidencias/fase4_validacion/31_web_content_check.txt`
+- `docs/evidencias/fase4_validacion/31_web_nginx_content_check.txt`
 
 En `control`:
 
@@ -247,17 +247,17 @@ Si usas Windows sin `curl` o con alias raro, abre en navegador:
 
 ## 6) Validación del servicio DB (MariaDB)
 
-### 6.1 Comprobar estado del servicio en `db`
+### 6.1 Comprobar estado del servicio en `db-mariadb`
 Guarda en:
 - `docs/evidencias/fase4_validacion/40_db_mariadb_status.txt`
 
 En el host:
 
 ```bash
-vagrant ssh db
+vagrant ssh db-mariadb
 ```
 
-Dentro de `db`:
+Dentro de `db-mariadb`:
 
 ```bash
 systemctl is-active mariadb
@@ -273,7 +273,7 @@ systemctl status mariadb --no-pager | head -n 30
 Guarda en:
 - `docs/evidencias/fase4_validacion/41_db_port_3306.txt`
 
-En `db`:
+En `db-mariadb`:
 
 ```bash
 sudo ss -lntp | grep 3306 || sudo ss -lnt | grep 3306
@@ -284,14 +284,14 @@ sudo ss -lntp | grep 3306 || sudo ss -lnt | grep 3306
 
 ---
 
-## 7) Validación cruzada (web ↔ db) — opcional avanzado
-> Solo si en fases futuras configuramos que web use db.  
-> Por ahora, con “db activo” vale, pero dejamos la guía preparada.
+## 7) Validación cruzada (web-nginx ↔ db-mariadb) — opcional avanzado
+> Solo si en fases futuras configuramos que web-nginx use db-mariadb.  
+> Por ahora, con “db-mariadb activo” vale, pero dejamos la guía preparada.
 
-Ejemplo de prueba desde `web` hacia `db`:
+Ejemplo de prueba desde `web-nginx` hacia `db-mariadb`:
 
 ```bash
-vagrant ssh web -c "nc -vz 192.168.56.12 3306 || true"
+vagrant ssh web-nginx -c "nc -vz 192.168.56.12 3306 || true"
 ```
 
 ✅ Prueba:
@@ -308,7 +308,7 @@ Marca cada punto:
 | Herramientas host | `vagrant --version`, `VBoxManage --version` | muestran versión | ⬜ |
 | Vagrant | `vagrant status` | 3 VMs en `running` | ⬜ |
 | Red VM | `ip a` en cada VM | IP Host-Only correcta | ⬜ |
-| Ping interno | `ping control → web/db` | responde | ⬜ |
+| Ping interno | `ping control → web-nginx/db-mariadb` | responde | ⬜ |
 | Internet NAT | `ping 1.1.1.1` | responde | ⬜ |
 | Ansible conectividad | `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` | SUCCESS | ⬜ |
 | Playbook | `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` | sin fallos | ⬜ |
@@ -326,13 +326,13 @@ En tu proyecto deben quedar:
   - `01_versions.txt`
   - `02_vagrant_status.txt`
   - `10_control_network.txt`
-  - `11_ping_control_to_web_db.txt`
+  - `11_ping_control_to_web_nginx_db_mariadb.txt`
   - `20_ansible_ping_lab.txt`
   - `21_ansible_playbook_first_run.txt`
   - `22_ansible_playbook_second_run.txt`
-  - `30_curl_web_from_control.txt`
+  - `30_curl_web_nginx_from_control.txt`
   - `40_db_mariadb_status.txt`
-  - (opcionales) `31_web_content_check.txt`, `41_db_port_3306.txt`
+  - (opcionales) `31_web_nginx_content_check.txt`, `41_db_port_3306.txt`
 
 > Si el profesor/cliente te pide “pruebas”, aquí están, limpias y ordenadas.
 

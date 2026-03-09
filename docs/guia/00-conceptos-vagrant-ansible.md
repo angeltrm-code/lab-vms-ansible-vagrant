@@ -63,7 +63,7 @@ Sirve para instalar paquetes, crear usuarios, editar configuraciones, habilitar 
 ### ¿Cómo funciona? (idea mental)
 Piensa en Ansible como un “robot” que entra por SSH y aplica instrucciones:
 
-- **Inventario**: lista de máquinas (web, db, control…)
+- **Inventario**: lista de máquinas (control, web-nginx, db-mariadb…)
 - **Playbooks**: recetas en YAML (qué tareas ejecutar)
 - **Conexión**: normalmente **SSH**
 - **Resultado**: máquinas en el estado deseado (“así debe estar”)
@@ -76,7 +76,7 @@ Piensa en Ansible como un “robot” que entra por SSH y aplica instrucciones:
 5. Repetible: lo vuelves a ejecutar cuando quieras.
 
 ### Piezas básicas de Ansible
-- **Inventario**: define hosts y grupos (por ejemplo `web`, `db`).
+- **Inventario**: define hosts y grupos (por ejemplo `web-nginx`, `db-mariadb`, `webservers`, `dbservers`).
 - **Playbook**: archivo YAML que contiene tareas.
 - **Módulos**: acciones ya preparadas (instalar paquetes, gestionar servicios, copiar archivos…).
 - **Roles**: estructura organizada de playbooks (útil cuando el proyecto crece).
@@ -84,7 +84,7 @@ Piensa en Ansible como un “robot” que entra por SSH y aplica instrucciones:
 ### Comandos de Ansible esenciales
 - `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → prueba conectividad con todas las máquinas del inventario
 - `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` → ejecuta el playbook principal
-- `ansible-inventory --list` → muestra el inventario resuelto
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-inventory --list` → muestra el inventario resuelto
 
 ---
 
@@ -95,16 +95,16 @@ Piensa en Ansible como un “robot” que entra por SSH y aplica instrucciones:
 - **Ansible**: configura lo que hay dentro de las VMs (software y servicios).
 
 **Foto completa del laboratorio:**
-1. **Vagrant** levanta las máquinas (control/web/db) con IPs estables y SSH.
+1. **Vagrant** levanta las máquinas (control/web-nginx/db-mariadb) con IPs estables y SSH.
 2. **Ansible** instala y configura servicios (nginx, mariadb, usuarios, firewall…).
 3. Validamos que el lab funciona y queda reproducible.
 
 ---
 
 ## 4) Ejemplo mental (sin código)
-Queremos 3 VMs: `control`, `web`, `db`  
+Queremos 3 VMs: `control`, `web-nginx`, `db-mariadb`  
 - Vagrant: crea las 3 VMs, les asigna IP privada fija y habilita acceso por SSH.
-- Ansible: instala **nginx** en `web`, **mariadb** en `db`, y deja todo configurado.
+- Ansible: instala **nginx** en `web-nginx`, **mariadb** en `db-mariadb`, y deja todo configurado.
 
 ---
 

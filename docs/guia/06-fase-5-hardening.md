@@ -11,11 +11,11 @@
 ## 0) Nota importante (para que no te quedes “fuera”)
 
 - Antes de tocar SSH o firewall, confirma que **tu acceso por clave funciona**.
-- Aplica cambios **primero en `web`**, valida, y después en el resto.
+- Aplica cambios **primero en `web-nginx`**, valida, y después en el resto.
 - Si activas firewall, asegúrate de permitir:
   - **22/tcp** (SSH)
-  - **80/tcp** (solo en `web`)
-  - **3306/tcp** (solo si necesitas que `web` acceda a la DB por red)
+  - **80/tcp** (solo en `web-nginx`)
+  - **3306/tcp** (solo si necesitas que `web-nginx` acceda a la DB por red)
 
 ---
 
@@ -29,8 +29,8 @@ vagrant status
 2) SSH:
 ```bash
 vagrant ssh control
-vagrant ssh web
-vagrant ssh db
+vagrant ssh web-nginx
+vagrant ssh db-mariadb
 ```
 
 3) IPs:
@@ -91,13 +91,13 @@ systemctl status mariadb --no-pager | head
 
 ### 3.1 Actualizaciones del sistema
 
-Debian (control/web):
+Debian (control/web-nginx):
 ```bash
 sudo apt update
 sudo apt upgrade -y
 ```
 
-Rocky (db):
+Rocky (db-mariadb):
 ```bash
 sudo dnf update -y
 ```
@@ -127,7 +127,7 @@ sudo systemctl restart sshd || sudo systemctl restart ssh
 
 ### 4.1 Debian (UFW)
 
-En `web`:
+En `web-nginx`:
 ```bash
 sudo apt install -y ufw
 sudo ufw default deny incoming
@@ -150,11 +150,11 @@ sudo ufw status verbose
 
 ### 4.2 Rocky (firewalld)
 
-En `db`:
+En `db-mariadb`:
 ```bash
 sudo systemctl enable --now firewalld
 sudo firewall-cmd --permanent --add-service=ssh
-# Solo si necesitas acceso a DB desde web/control:
+# Solo si necesitas acceso a DB desde web-nginx/control:
 sudo firewall-cmd --permanent --add-port=3306/tcp
 sudo firewall-cmd --reload
 sudo firewall-cmd --list-all
@@ -174,12 +174,12 @@ Luego puedes usar módulos como `community.general.ufw` y `ansible.posix.firewal
 
 ### Opción B (recomendada para curso: sin colecciones)
 Usa `command`/`shell` para firewall (menos elegante, más simple).  
-Ejemplo para `web` (UFW):
+Ejemplo para `web-nginx` (UFW):
 
 ```yaml
 ---
 - name: Firewall web (UFW sin colecciones)
-  hosts: web
+  hosts: webservers
   become: true
   tasks:
     - name: Instalar ufw
@@ -206,8 +206,8 @@ Guarda en `docs/evidencias/fase5_hardening/`:
 
 - `01_updates_debian.txt`
 - `02_updates_rocky.txt`
-- `10_ufw_status_web.txt`
-- `20_firewalld_status_db.txt`
+- `10_ufw_status_web_nginx.txt`
+- `20_firewalld_status_db_mariadb.txt`
 - `30_ss_listening_ports.txt` (opcional)
 
 Comando útil para puertos:
@@ -222,7 +222,7 @@ sudo ss -lntp
 - [ ] Sistemas actualizados (Debian y Rocky)
 - [ ] SSH reforzado (sin root; contraseña desactivada solo si procede)
 - [ ] Firewall activo sin romper nada:
-  - [ ] `web` permite 22 y 80
-  - [ ] `db` permite 22 (y 3306 si se requiere)
+  - [ ] `web-nginx` permite 22 y 80
+  - [ ] `db-mariadb` permite 22 (y 3306 si se requiere)
 - [ ] `curl http://192.168.56.11` sigue funcionando
 - [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` sigue funcionando

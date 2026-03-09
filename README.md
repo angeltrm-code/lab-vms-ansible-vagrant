@@ -7,6 +7,10 @@
 
 La entrada recomendada del curso es: **[docs/guia/00-indice-guia.md](docs/guia/00-indice-guia.md)**
 
+Si quieres empezar por una version corta:
+- [docs/guia/guia-rapida.md](docs/guia/guia-rapida.md)
+- [docs/guia/04-entrega-final-checklist.md](docs/guia/04-entrega-final-checklist.md)
+
 ## Qué incluye esta guía
 
 - Explicación de conceptos (Vagrant y Ansible) para principiantes.
@@ -51,16 +55,23 @@ lab-vms-ansible-vagrant/
 6. [docs/guia/04-fase-3-ansible.md](docs/guia/04-fase-3-ansible.md)
 7. [docs/guia/05-fase-4-validacion.md](docs/guia/05-fase-4-validacion.md)
 8. [docs/guia/06-fase-5-hardening.md](docs/guia/06-fase-5-hardening.md)
+9. [docs/guia/04-entrega-final-checklist.md](docs/guia/04-entrega-final-checklist.md)
+
+## Ruta corta para alumnos
+
+1. [docs/guia/guia-rapida.md](docs/guia/guia-rapida.md)
+2. [docs/guia/04-entrega-final-checklist.md](docs/guia/04-entrega-final-checklist.md)
+3. [docs/evidencias/README.md](docs/evidencias/README.md)
 
 ## Ejecución rápida (curso)
 
 1. Instala VirtualBox y Vagrant, y verifica con `vagrant --version` y `VBoxManage --version`.
-2. En la raíz del repo, ejecuta `vagrant up` para levantar `control`, `web` y `db`.
+2. En la raíz del repo, ejecuta `vagrant up` para levantar `control`, `web-nginx` y `db-mariadb`.
 3. Entra a `control` con `vagrant ssh control` e instala Ansible (`sudo apt update && sudo apt install -y ansible openssh-client`).
-4. Genera/copia la clave SSH desde `control` hacia `web` y `db` según la guía de Fase 3.
+4. Genera/copia la clave SSH desde `control` hacia `web-nginx` y `db-mariadb` según la guía de Fase 3.
 5. En `control`, ve a `/vagrant/ansible` y valida conectividad: `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab`.
 6. Ejecuta `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` dos veces para comprobar idempotencia.
-7. Verifica servicios: `curl http://192.168.56.11` y `systemctl is-active mariadb` en `db`.
+7. Verifica servicios: `curl http://192.168.56.11` y `systemctl is-active mariadb` en `db-mariadb`.
 
 Nota: en `/vagrant/ansible` usamos `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg` porque Ansible puede ignorar `ansible.cfg` en directorios world-writable.
 
@@ -70,7 +81,7 @@ Nota: en `/vagrant/ansible` usamos `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg`
 - [ ] `vagrant ssh control` funciona.
 - [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` devuelve `SUCCESS`.
 - [ ] `curl http://192.168.56.11` responde con la página de prueba.
-- [ ] `systemctl is-active mariadb` en `db` devuelve `active`.
+- [ ] `systemctl is-active mariadb` en `db-mariadb` devuelve `active`.
 - [ ] Evidencias guardadas en `docs/evidencias/`.
 
 ## Notas y buenas prácticas
