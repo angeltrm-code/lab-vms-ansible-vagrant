@@ -102,8 +102,8 @@
 - Entender idempotencia
 
 **Checkpoint:**
-- `ansible -m ping lab` → SUCCESS
-- `ansible-playbook site.yml` sin fallos
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → SUCCESS
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` sin fallos
 - Segunda ejecución con pocos `changed`
 
 **Evidencias recomendadas:**

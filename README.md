@@ -22,7 +22,7 @@ La entrada recomendada del curso es: **[docs/guia/00-indice-guia.md](docs/guia/0
 ## Estructura recomendada del proyecto
 
 ```text
-lab-vagrant-ansible/
+lab-vms-ansible-vagrant/
 |- Vagrantfile
 |- ansible/
 |  |- ansible.cfg
@@ -58,15 +58,17 @@ lab-vagrant-ansible/
 2. En la raíz del repo, ejecuta `vagrant up` para levantar `control`, `web` y `db`.
 3. Entra a `control` con `vagrant ssh control` e instala Ansible (`sudo apt update && sudo apt install -y ansible openssh-client`).
 4. Genera/copia la clave SSH desde `control` hacia `web` y `db` según la guía de Fase 3.
-5. En `control`, ve a `/vagrant/ansible` y valida conectividad: `ansible -m ping lab`.
-6. Ejecuta `ansible-playbook site.yml` dos veces para comprobar idempotencia.
+5. En `control`, ve a `/vagrant/ansible` y valida conectividad: `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab`.
+6. Ejecuta `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` dos veces para comprobar idempotencia.
 7. Verifica servicios: `curl http://192.168.56.11` y `systemctl is-active mariadb` en `db`.
+
+Nota: en `/vagrant/ansible` usamos `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg` porque Ansible puede ignorar `ansible.cfg` en directorios world-writable.
 
 ## Checklist final de lab funcional
 
 - [ ] `vagrant status` muestra VMs en `running`.
 - [ ] `vagrant ssh control` funciona.
-- [ ] `ansible -m ping lab` devuelve `SUCCESS`.
+- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` devuelve `SUCCESS`.
 - [ ] `curl http://192.168.56.11` responde con la página de prueba.
 - [ ] `systemctl is-active mariadb` en `db` devuelve `active`.
 - [ ] Evidencias guardadas en `docs/evidencias/`.
@@ -87,3 +89,4 @@ lab-vagrant-ansible/
 ## Backups
 
 Los backups se guardan en `_bak/` y no forman parte de la guía.
+La carpeta `_bak/` replica la ruta original para mantener trazabilidad (por ejemplo: `_bak/docs/guia/...`).

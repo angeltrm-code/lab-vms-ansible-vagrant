@@ -9,7 +9,7 @@
 Vamos a unificar estos documentos en una estructura clara:
 
 - `vagrant-y-ansible-explicacion.md`
-- `hoja-de-ruta-lab-vagrant-ansible.md`
+- `hoja-de-ruta-lab-vms-ansible-vagrant.md`
 - `fase-0-preparacion-host.md`
 - `fase-1-diseno-del-laboratorio.md`
 - `fase-2-provisionado-vagrant-virtualbox.md`
@@ -25,23 +25,23 @@ Y añadiremos:
 
 ## 2) Estructura final recomendada (carpetas)
 
-Dentro de tu proyecto `lab-vagrant-ansible/`:
+Dentro de tu proyecto `lab-vms-ansible-vagrant/`:
 
 ```
-lab-vagrant-ansible/
+lab-vms-ansible-vagrant/
 ├─ Vagrantfile
 ├─ ansible/
 ├─ docs/
 │  ├─ guia/
-│  │  ├─ 00_indice.md
-│  │  ├─ 00_conceptos_vagrant_ansible.md
-│  │  ├─ 00_hoja_de_ruta.md
-│  │  ├─ 01_fase_0_host.md
-│  │  ├─ 02_fase_1_diseno.md
-│  │  ├─ 03_fase_2_vagrant.md
-│  │  ├─ 04_fase_3_ansible.md
-│  │  ├─ 05_fase_4_validacion.md
-│  │  └─ 06_fase_5_hardening.md
+│  │  ├─ 00-indice-guia.md
+│  │  ├─ 00-conceptos-vagrant-ansible.md
+│  │  ├─ 00-hoja-de-ruta.md
+│  │  ├─ 01-fase-0-host.md
+│  │  ├─ 02-fase-1-diseno.md
+│  │  ├─ 03-fase-2-vagrant.md
+│  │  ├─ 04-fase-3-ansible.md
+│  │  ├─ 05-fase-4-validacion.md
+│  │  └─ 06-fase-5-hardening.md
 │  └─ evidencias/
 │     ├─ fase0_host/
 │     ├─ fase2_vagrant/
@@ -76,20 +76,20 @@ Ejemplo de correspondencias:
 
 | Archivo actual | Archivo final (recomendado) |
 |---|---|
-| `vagrant-y-ansible-explicacion.md` | `docs/guia/00_conceptos_vagrant_ansible.md` |
-| `hoja-de-ruta-lab-vagrant-ansible.md` | `docs/guia/00_hoja_de_ruta.md` |
-| `fase-0-preparacion-host.md` | `docs/guia/01_fase_0_host.md` |
-| `fase-1-diseno-del-laboratorio.md` | `docs/guia/02_fase_1_diseno.md` |
-| `fase-2-provisionado-vagrant-virtualbox.md` | `docs/guia/03_fase_2_vagrant.md` |
-| `fase-3-ansible-automatizacion.md` | `docs/guia/04_fase_3_ansible.md` |
-| `fase-4-validacion-evidencias.md` | `docs/guia/05_fase_4_validacion.md` |
-| `fase-5-troubleshooting-hardening.md` | `docs/guia/06_fase_5_hardening.md` |
+| `vagrant-y-ansible-explicacion.md` | `docs/guia/00-conceptos-vagrant-ansible.md` |
+| `hoja-de-ruta-lab-vms-ansible-vagrant.md` | `docs/guia/00-hoja-de-ruta.md` |
+| `fase-0-preparacion-host.md` | `docs/guia/01-fase-0-host.md` |
+| `fase-1-diseno-del-laboratorio.md` | `docs/guia/02-fase-1-diseno.md` |
+| `fase-2-provisionado-vagrant-virtualbox.md` | `docs/guia/03-fase-2-vagrant.md` |
+| `fase-3-ansible-automatizacion.md` | `docs/guia/04-fase-3-ansible.md` |
+| `fase-4-validacion-evidencias.md` | `docs/guia/05-fase-4-validacion.md` |
+| `fase-5-troubleshooting-hardening.md` | `docs/guia/06-fase-5-hardening.md` |
 
 > En Windows, si no quieres usar comandos, puedes hacerlo arrastrando con el explorador.
 
 ---
 
-## 4) Crear un índice dentro de `docs/guia/` (00_indice.md)
+## 4) Crear un índice dentro de `docs/guia/` (00-indice-guia.md)
 
 Este archivo sirve como “menú” dentro de `docs/guia/`.
 
@@ -157,4 +157,4 @@ Opcional (muy pro):
 ## Próximo paso
 Si quieres, el siguiente archivo que generamos es:
 
-- `docs/guia/00_indice.md` (índice navegable y bonito)
+- `docs/guia/00-indice-guia.md` (índice navegable y bonito)

@@ -10,8 +10,8 @@
 
 ✅ Desde `control` podrás ejecutar:
 
-- `ansible -m ping lab` → OK
-- `ansible-playbook site.yml` → instala y configura servicios
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → OK
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` → instala y configura servicios
 
 ✅ Resultado final (ejemplo didáctico):
 - En **web**: servidor web instalado y funcionando (nginx por defecto)
@@ -133,9 +133,15 @@ web ansible_host=192.168.56.11
 [db]
 db ansible_host=192.168.56.12
 
-[lab:children]
+[debian:children]
 web
+
+[rocky:children]
 db
+
+[lab:children]
+debian
+rocky
 
 [lab:vars]
 ansible_user=vagrant
@@ -147,10 +153,11 @@ ansible_ssh_private_key_file=/home/vagrant/.ssh/id_ed25519
 ## 6) Probar Ansible (ping)
 
 En `control`:
+Usa `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg` para evitar que Ansible ignore `ansible.cfg` al ejecutar desde `/vagrant` (directorio compartido world-writable).
 
 ```bash
 cd /vagrant/ansible
-ansible -m ping lab
+ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab
 ```
 
 ✅ Debes ver `SUCCESS` para `web` y `db`.
@@ -194,6 +201,16 @@ Crea `playbooks/01_bootstrap.yml`:
 
 ```yaml
 ---
+- name: Pre-bootstrap (asegurar Python en Rocky antes de facts)
+  hosts: rocky
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Asegurar Python3 en Rocky para habilitar modulos Ansible
+      ansible.builtin.raw: |
+        test -x /usr/bin/python3 || dnf -y install python3
+      changed_when: false
+
 - name: Bootstrap (paquetes básicos y caché de paquetes)
   hosts: lab
   become: true
@@ -212,12 +229,6 @@ Crea `playbooks/01_bootstrap.yml`:
       ansible.builtin.package:
         name: "{{ common_packages }}"
         state: present
-
-    - name: Asegurar Python en targets RedHat (por si la box es minimal)
-      ansible.builtin.dnf:
-        name: python3
-        state: present
-      when: ansible_os_family == "RedHat"
 ```
 
 ---
@@ -230,14 +241,11 @@ Crea `playbooks/02_config.yml`:
 - name: Configurar servidor web (Debian)
   hosts: web
   become: true
-  vars_files:
-    - ../group_vars/debian.yml
   tasks:
     - name: Instalar paquete web
       ansible.builtin.apt:
         name: "{{ web_package }}"
         state: present
-        update_cache: yes
 
     - name: Asegurar servicio web arrancado y habilitado
       ansible.builtin.service:
@@ -251,7 +259,7 @@ Crea `playbooks/02_config.yml`:
         content: |
           <h1>OK - web configurada por Ansible</h1>
           <p>Host: {{ inventory_hostname }}</p>
-          <p>Fecha: {{ ansible_date_time.iso8601 }}</p>
+          <p>Gestionado por Ansible</p>
         owner: root
         group: root
         mode: "0644"
@@ -259,8 +267,6 @@ Crea `playbooks/02_config.yml`:
 - name: Configurar base de datos (Rocky)
   hosts: db
   become: true
-  vars_files:
-    - ../group_vars/rocky.yml
   tasks:
     - name: Instalar MariaDB Server
       ansible.builtin.dnf:
@@ -288,27 +294,34 @@ Crea `playbooks/03_verify.yml`:
     - name: Comprobar que el puerto 80 responde
       ansible.builtin.uri:
         url: "http://{{ ansible_host }}/"
+        status_code: 200
         return_content: true
       register: web_check
 
-    - name: Confirmar que la página es la desplegada por Ansible
-      ansible.builtin.debug:
-        msg: "OK encontrado: {{ web_check.content is search('OK - web configurada por Ansible') }}"
+    - name: Fallar si la pagina desplegada no es la esperada
+      ansible.builtin.assert:
+        that:
+          - web_check.status == 200
+          - "'OK - web configurada por Ansible' in web_check.content"
+        fail_msg: "La verificacion web ha fallado: HTTP o contenido no esperado."
+        success_msg: "Verificacion web OK: HTTP 200 y contenido esperado."
 
 - name: Verificar DB (servicio activo)
   hosts: db
   become: true
-  vars_files:
-    - ../group_vars/rocky.yml
   tasks:
     - name: Obtener estado del servicio de DB
       ansible.builtin.systemd:
         name: "{{ db_service }}"
       register: db_state
+      changed_when: false
 
-    - name: Mostrar ActiveState
-      ansible.builtin.debug:
-        var: db_state.status.ActiveState
+    - name: Fallar si MariaDB no esta activa
+      ansible.builtin.assert:
+        that:
+          - db_state.status.ActiveState == "active"
+        fail_msg: "MariaDB no esta activa en {{ inventory_hostname }}."
+        success_msg: "MariaDB activa en {{ inventory_hostname }}."
 ```
 
 ---
@@ -332,14 +345,14 @@ En `control`:
 
 ```bash
 cd /vagrant/ansible
-ansible-playbook site.yml
+ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml
 ```
 
 ✅ Debe terminar sin fallos.
 
 ### 10.1 Idempotencia (ejecútalo otra vez)
 ```bash
-ansible-playbook site.yml
+ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml
 ```
 
 La segunda vez, la mayoría de tareas deberían mostrar `ok` en lugar de `changed`.
@@ -367,8 +380,8 @@ ssh -i /home/vagrant/.ssh/id_ed25519 vagrant@192.168.56.12 "systemctl is-active 
 Guarda salida/capturas de:
 
 - `ansible --version`
-- `ansible -m ping lab`
-- `ansible-playbook site.yml` (primera y segunda ejecución)
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab`
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` (primera y segunda ejecución)
 - `curl http://192.168.56.11`
 - `systemctl is-active mariadb` en `db`
 
@@ -376,8 +389,8 @@ Guarda salida/capturas de:
 
 ## Checkpoint de la Fase 3
 
-- [ ] `ansible -m ping lab` → SUCCESS en web y db
-- [ ] `ansible-playbook site.yml` → termina OK
+- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → SUCCESS en web y db
+- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` → termina OK
 - [ ] `curl http://192.168.56.11` muestra la página de Ansible
 - [ ] `systemctl is-active mariadb` en db devuelve `active`
 - [ ] Segunda ejecución del playbook muestra pocos `changed` (idempotente)

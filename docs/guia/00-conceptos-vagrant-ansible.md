@@ -82,8 +82,8 @@ Piensa en Ansible como un “robot” que entra por SSH y aplica instrucciones:
 - **Roles**: estructura organizada de playbooks (útil cuando el proyecto crece).
 
 ### Comandos de Ansible esenciales
-- `ansible -m ping all` → prueba conectividad con todas las máquinas del inventario
-- `ansible-playbook site.yml` → ejecuta el playbook principal
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → prueba conectividad con todas las máquinas del inventario
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` → ejecuta el playbook principal
 - `ansible-inventory --list` → muestra el inventario resuelto
 
 ---

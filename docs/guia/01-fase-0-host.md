@@ -125,14 +125,14 @@ El objetivo es que TODO quede dentro de una carpeta para que sea reproducible.
 En PowerShell:
 
 ```powershell
-mkdir lab-vagrant-ansible
-cd lab-vagrant-ansible
+mkdir lab-vms-ansible-vagrant
+cd lab-vms-ansible-vagrant
 ```
 
 ### 7.2 Crear carpeta (Linux)
 ```bash
-mkdir -p lab-vagrant-ansible
-cd lab-vagrant-ansible
+mkdir -p lab-vms-ansible-vagrant
+cd lab-vms-ansible-vagrant
 ```
 
 ### 7.3 Estructura recomendada desde el inicio
@@ -145,7 +145,7 @@ mkdir -p ansible docs/evidencias
 Tu estructura quedará así:
 
 ```
-lab-vagrant-ansible/
+lab-vms-ansible-vagrant/
 ├─ Vagrantfile          (se creará en Fase 2)
 ├─ ansible/             (inventario, playbooks)
 └─ docs/
@@ -244,7 +244,7 @@ Ubicación recomendada:
 - [ ] `VBoxManage --version` funciona
 - [ ] Vagrant instalado
 - [ ] `vagrant --version` funciona
-- [ ] Carpeta `lab-vagrant-ansible/` creada con `ansible/` y `docs/evidencias/`
+- [ ] Carpeta `lab-vms-ansible-vagrant/` creada con `ansible/` y `docs/evidencias/`
 
 ---
 

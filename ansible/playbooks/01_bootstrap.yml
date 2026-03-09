@@ -1,4 +1,14 @@
 ---
+- name: Pre-bootstrap (asegurar Python en Rocky antes de facts)
+  hosts: rocky
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Asegurar Python3 en Rocky para habilitar modulos Ansible
+      ansible.builtin.raw: |
+        test -x /usr/bin/python3 || dnf -y install python3
+      changed_when: false
+
 - name: Bootstrap (paquetes basicos y cache de paquetes)
   hosts: lab
   become: true
@@ -17,9 +27,3 @@
       ansible.builtin.package:
         name: "{{ common_packages }}"
         state: present
-
-    - name: Asegurar Python en targets RedHat (por si la box es minimal)
-      ansible.builtin.dnf:
-        name: python3
-        state: present
-      when: ansible_os_family == "RedHat"

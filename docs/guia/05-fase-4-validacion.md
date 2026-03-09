@@ -170,7 +170,7 @@ En `control`:
 
 ```bash
 cd /vagrant/ansible
-ansible -m ping lab
+ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab
 ```
 
 ✅ Prueba:
@@ -186,8 +186,8 @@ Guarda en:
 Comandos:
 
 ```bash
-ansible-playbook site.yml
-ansible-playbook site.yml
+ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml
+ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml
 ```
 
 ✅ Prueba:
@@ -310,8 +310,8 @@ Marca cada punto:
 | Red VM | `ip a` en cada VM | IP Host-Only correcta | ⬜ |
 | Ping interno | `ping control → web/db` | responde | ⬜ |
 | Internet NAT | `ping 1.1.1.1` | responde | ⬜ |
-| Ansible conectividad | `ansible -m ping lab` | SUCCESS | ⬜ |
-| Playbook | `ansible-playbook site.yml` | sin fallos | ⬜ |
+| Ansible conectividad | `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` | SUCCESS | ⬜ |
+| Playbook | `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` | sin fallos | ⬜ |
 | Idempotencia | segunda ejecución | pocos `changed` | ⬜ |
 | Web HTTP | `curl http://192.168.56.11` | 200 OK / HTML | ⬜ |
 | DB service | `systemctl is-active mariadb` | `active` | ⬜ |

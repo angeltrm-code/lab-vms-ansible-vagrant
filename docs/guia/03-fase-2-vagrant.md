@@ -30,15 +30,15 @@
 Crea una carpeta de proyecto. Ejemplo (Windows):
 
 ```powershell
-mkdir lab-vagrant-ansible
-cd lab-vagrant-ansible
+mkdir lab-vms-ansible-vagrant
+cd lab-vms-ansible-vagrant
 ```
 
 Ejemplo (Linux):
 
 ```bash
-mkdir -p lab-vagrant-ansible
-cd lab-vagrant-ansible
+mkdir -p lab-vms-ansible-vagrant
+cd lab-vms-ansible-vagrant
 ```
 
 ### 1.2 (Opcional) Iniciar Git
@@ -97,7 +97,7 @@ Vagrant usa “boxes” como plantilla.
 
 ### 4.1 Boxes recomendadas (muy usadas)
 - Debian: `debian/bookworm64` (válida y común)
-- Rocky: `rockylinux/9`
+- Rocky: `rockylinux/9` (pin recomendado: `5.0.0`)
 
 > Nota: en el futuro puedes cambiar a Debian 13 cuando la box esté disponible/estable, pero para un lab didáctico estas funcionan muy bien.
 
@@ -154,6 +154,7 @@ Vagrant.configure("2") do |config|
   # =========================
   config.vm.define "db" do |db|
     db.vm.box = "rockylinux/9"
+    db.vm.box_version = "5.0.0"
     db.vm.hostname = "db"
     db.vm.network "private_network", ip: "#{LAB_NET}12"
 
@@ -369,5 +370,5 @@ Guarda capturas o copia/pega de estos comandos:
 Con las VMs arriba, en la Fase 3 haremos:
 - instalar Ansible en `control`
 - inventario con `web` y `db`
-- `ansible -m ping all`
+- `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab`
 - playbooks por etapas: bootstrap → config → verify

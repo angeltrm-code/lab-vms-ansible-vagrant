@@ -14,9 +14,9 @@
 
 ### 1.2 Rutas “oficiales” (recomendadas)
 En el host:
-- Proyecto: `lab-vagrant-ansible/`
-- Guía: `lab-vagrant-ansible/docs/guia/`
-- Evidencias: `lab-vagrant-ansible/docs/evidencias/`
+- Proyecto: `lab-vms-ansible-vagrant/`
+- Guía: `lab-vms-ansible-vagrant/docs/guia/`
+- Evidencias: `lab-vms-ansible-vagrant/docs/evidencias/`
 
 En la VM `control`:
 - Carpeta compartida: `/vagrant`
@@ -33,7 +33,7 @@ cd /vagrant/ansible
 
 ### 2.1 SSOT (Single Source of Truth)
 Define un único sitio donde vivirán las IPs y nombres:  
-- En la guía: `docs/guia/02_fase_1_diseno.md`  
+- En la guía: `docs/guia/02-fase-1-diseno.md`  
 - En el código: `Vagrantfile`
 
 ### 2.2 Tabla oficial (no cambiar)
@@ -182,8 +182,8 @@ Marca esto antes de dar la guía por finalizada:
 
 - [ ] Todas las fases usan IPs y nombres coherentes
 - [ ] Todas las rutas son consistentes (`/vagrant/ansible`, `docs/evidencias/`)
-- [ ] Fase 3: `ansible -m ping lab` funciona
-- [ ] Fase 3: `ansible-playbook site.yml` funciona 2 veces (idempotencia)
+- [ ] Fase 3: `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` funciona
+- [ ] Fase 3: `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` funciona 2 veces (idempotencia)
 - [ ] Fase 4: evidencias guardadas y organizadas
 - [ ] Fase 5: hardening no rompe el acceso ni la web
 - [ ] README enlaza a todo y el índice funciona
@@ -192,7 +192,7 @@ Marca esto antes de dar la guía por finalizada:
 
 ## 9) Acciones recomendadas (si quieres que lo dejemos perfecto)
 
-1) Generar un **`00_indice.md`** navegable para `docs/guia/`  
+1) Generar un **`00-indice-guia.md`** navegable para `docs/guia/`  
 2) Decidir Camino A o B para firewall (colecciones vs comandos)  
 3) Añadir una sección “Windows host” en la Fase 0 o README  
 4) Hacer una pasada final de coherencia (IPs/rutas)

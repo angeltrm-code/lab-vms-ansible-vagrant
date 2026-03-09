@@ -57,7 +57,7 @@ ping -c 2 deb.debian.org
 7) Ansible:
 ```bash
 cd /vagrant/ansible
-ansible -m ping lab
+ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab
 ```
 
 8) Servicios:
@@ -225,4 +225,4 @@ sudo ss -lntp
   - [ ] `web` permite 22 y 80
   - [ ] `db` permite 22 (y 3306 si se requiere)
 - [ ] `curl http://192.168.56.11` sigue funcionando
-- [ ] `ansible -m ping lab` sigue funcionando
+- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` sigue funcionando

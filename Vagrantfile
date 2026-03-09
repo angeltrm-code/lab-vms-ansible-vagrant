@@ -44,6 +44,7 @@ Vagrant.configure("2") do |config|
   # =========================
   config.vm.define "db" do |db|
     db.vm.box = "rockylinux/9"
+    db.vm.box_version = "5.0.0"
     db.vm.hostname = "db"
     db.vm.network "private_network", ip: "#{LAB_NET}12"
 

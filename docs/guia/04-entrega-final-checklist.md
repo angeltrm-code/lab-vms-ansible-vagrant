@@ -43,9 +43,9 @@ Marca todo como ✅ antes de entregar.
 
 ### 2.3 Ansible (automatización)
 - [ ] En `control`, `ansible --version` funciona
-- [ ] `ansible -m ping lab` → SUCCESS en web y db
-- [ ] `ansible-playbook site.yml` termina sin fallos
-- [ ] Segunda ejecución de `ansible-playbook site.yml` muestra pocos `changed` (idempotencia)
+- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` → SUCCESS en web y db
+- [ ] `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` termina sin fallos
+- [ ] Segunda ejecución de `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` muestra pocos `changed` (idempotencia)
 
 ### 2.4 Servicios (resultado del lab)
 - [ ] WEB:
@@ -101,9 +101,9 @@ Guardar en `docs/evidencias/fase2_vagrant/`:
 Guardar en `docs/evidencias/fase3_ansible/`:
 
 - `01_ansible_version.txt` → `ansible --version`
-- `02_ansible_ping_lab.txt` → `ansible -m ping lab`
-- `03_playbook_first_run.txt` → `ansible-playbook site.yml` (1ª)
-- `04_playbook_second_run.txt` → `ansible-playbook site.yml` (2ª)
+- `02_ansible_ping_lab.txt` → `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab`
+- `03_playbook_first_run.txt` → `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` (1ª)
+- `04_playbook_second_run.txt` → `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml` (2ª)
 
 ---
 
@@ -139,8 +139,8 @@ En `control`:
 ```bash
 vagrant ssh control
 cd /vagrant/ansible
-ansible -m ping lab
-ansible-playbook site.yml
+ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab
+ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible-playbook site.yml
 curl -I http://192.168.56.11 | head -n 5
 ping -c 2 1.1.1.1
 ```

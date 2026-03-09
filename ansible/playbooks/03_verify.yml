@@ -6,24 +6,31 @@
     - name: Comprobar que el puerto 80 responde
       ansible.builtin.uri:
         url: "http://{{ ansible_host }}/"
+        status_code: 200
         return_content: true
       register: web_check
 
-    - name: Confirmar que la pagina es la desplegada por Ansible
-      ansible.builtin.debug:
-        msg: "OK encontrado: {{ web_check.content is search('OK - web configurada por Ansible') }}"
+    - name: Fallar si la pagina desplegada no es la esperada
+      ansible.builtin.assert:
+        that:
+          - web_check.status == 200
+          - "'OK - web configurada por Ansible' in web_check.content"
+        fail_msg: "La verificacion web ha fallado: HTTP o contenido no esperado."
+        success_msg: "Verificacion web OK: HTTP 200 y contenido esperado."
 
 - name: Verificar DB (servicio activo)
   hosts: db
   become: true
-  vars_files:
-    - ../group_vars/rocky.yml
   tasks:
     - name: Obtener estado del servicio de DB
       ansible.builtin.systemd:
         name: "{{ db_service }}"
       register: db_state
+      changed_when: false
 
-    - name: Mostrar ActiveState
-      ansible.builtin.debug:
-        var: db_state.status.ActiveState
+    - name: Fallar si MariaDB no esta activa
+      ansible.builtin.assert:
+        that:
+          - db_state.status.ActiveState == "active"
+        fail_msg: "MariaDB no esta activa en {{ inventory_hostname }}."
+        success_msg: "MariaDB activa en {{ inventory_hostname }}."

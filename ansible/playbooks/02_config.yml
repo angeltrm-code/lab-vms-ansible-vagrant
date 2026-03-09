@@ -2,14 +2,11 @@
 - name: Configurar servidor web (Debian)
   hosts: web
   become: true
-  vars_files:
-    - ../group_vars/debian.yml
   tasks:
     - name: Instalar paquete web
       ansible.builtin.apt:
         name: "{{ web_package }}"
         state: present
-        update_cache: yes
 
     - name: Asegurar servicio web arrancado y habilitado
       ansible.builtin.service:
@@ -23,7 +20,7 @@
         content: |
           <h1>OK - web configurada por Ansible</h1>
           <p>Host: {{ inventory_hostname }}</p>
-          <p>Fecha: {{ ansible_date_time.iso8601 }}</p>
+          <p>Gestionado por Ansible</p>
         owner: root
         group: root
         mode: "0644"
@@ -31,8 +28,6 @@
 - name: Configurar base de datos (Rocky)
   hosts: db
   become: true
-  vars_files:
-    - ../group_vars/rocky.yml
   tasks:
     - name: Instalar MariaDB Server
       ansible.builtin.dnf:

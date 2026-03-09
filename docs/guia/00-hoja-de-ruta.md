@@ -71,7 +71,7 @@
   3. **verify** (comprobaciones)
 - Idempotencia: ejecutar 2 veces y que no “rompa” nada.
 
-**Checkpoint:** `ansible -m ping all` responde OK y un playbook termina sin fallos.
+**Checkpoint:** `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab` responde OK y un playbook termina sin fallos.
 
 ---
 

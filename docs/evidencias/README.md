@@ -46,7 +46,7 @@ Guarda cada evidencia en la carpeta correcta:
 - `01_vagrant_status.txt`
   Comando: `vagrant status`
 - `20_ansible_ping_lab.txt`
-  Comando: `ansible -m ping lab`
+  Comando: `ANSIBLE_CONFIG=/vagrant/ansible/ansible.cfg ansible -m ping lab`
 - `30_curl_web_headers.txt`
   Comando: `curl -I http://192.168.56.11`
 - `40_db_mariadb_active.txt`
@@ -63,8 +63,14 @@ Guarda cada evidencia en la carpeta correcta:
 
 Esta carpeta esta ignorada por Git por defecto.
 
-Eso se define en `.gitignore` con la linea:
+Eso se define en `.gitignore` con esta regla principal:
 
-- `docs/evidencias/`
+- `docs/evidencias/*`
 
-Si quieres versionar evidencias en Git, elimina esa linea de `.gitignore`.
+Y con estas excepciones para mantener la documentacion base:
+
+- `!docs/evidencias/README.md`
+- `!docs/evidencias/00_template_evidencias.txt`
+- `!docs/evidencias/**/`
+
+Si quieres versionar evidencias en Git, ajusta esas lineas segun tu politica.

@@ -157,7 +157,7 @@ Coinciden con el nombre:
 (la crearemos en la Fase 2, pero la dejamos diseñada ya)
 
 ```
-lab-vagrant-ansible/
+lab-vms-ansible-vagrant/
 ├─ Vagrantfile
 ├─ ansible/
 │  ├─ inventory.ini
